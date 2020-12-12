@@ -6,7 +6,7 @@ function love.load()
 	cells = {}
 	for y = 1, 9 do
 		cells[y] = {}
-		for x = 1, 9 do cells[y][x] = Cell.new(x - 1, y - 1) end
+		for x = 1, 9 do cells[y][x] = Cell.new((x - 1) * 32, (y - 1) * 32) end
 	end
 	
 	local m = 10
@@ -35,12 +35,6 @@ function love.load()
 			end
 		end
 	end
-	
-	for y = 1, 9 do
-		for x = 1, 9 do
-			cells[y][x].image = love.graphics.newImage("assets/cells/"..cells[y][x].value..".png")
-		end
-	end
 end
 
 function love.update(dt) end
@@ -55,4 +49,20 @@ end
 
 function love.keypressed(key)
 	if key == "escape" then love.event.quit() end
+end
+
+function love.mousepressed(x, y, button)
+	for y = 1, 9 do
+		for x = 1, 9 do
+			cells[y][x]:mousepressed(x, y, button)
+		end
+	end
+end
+
+function love.mousereleased(x, y, button)
+	for y = 1, 9 do
+		for x = 1, 9 do
+			cells[y][x]:mousereleased(x, y, button)
+		end
+	end
 end
