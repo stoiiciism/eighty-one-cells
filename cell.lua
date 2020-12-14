@@ -10,16 +10,49 @@ function M.new(x, y)
 	self.value = 0
 	self.x = x
 	self.y = y
-	self:setState(0)
+	self:fix()
 	return self
 end
 
-function M.setState(self, state)
-	self.state = state
-	if self.state == 0 then self.image = love.graphics.newImage("assets/cells/block.png")
-	elseif self.state == 1 then self.image = love.graphics.newImage("assets/cells/flag.png")
-	elseif self.state == 2 then self.image = love.graphics.newImage("assets/cells/0.png")
-	elseif self.state == 3 then self.image = love.graphics.newImage("assets/cells/"..self.value..".png") end
+function M.isFixed(self)
+	return self.flagged == false and self.pressed == false and self.revealed == false
+end
+
+function M.isFlagged(self)
+	return self.flagged == true and self.pressed == false and self.revealed == false
+end
+
+function M.isPressed(self)
+	return self.flagged == false and self.pressed == true and self.revealed == false
+end
+
+function M.isRevealed(self)
+	return self.flagged == false and self.pressed == false and self.revealed == true
+end
+
+function M.fix(self)
+	self.flagged = false
+	self.pressed = false
+	self.revealed = false
+	self.image = love.graphics.newImage("assets/cells/block.png")
+end
+
+function M.flag(self)
+	self:fix()
+	self.flagged = true
+	self.image = love.graphics.newImage("assets/cells/flag.png")
+end
+
+function M.press(self)
+	self:fix()
+	self.pressed = true
+	self.image = love.graphics.newImage("assets/cells/0.png")
+end
+
+function M.reveal(self)
+	self:fix()
+	self.revealed = true
+	self.image = love.graphics.newImage("assets/cells/"..self.value..".png")
 end
 
 function M.draw(self)
@@ -30,17 +63,26 @@ end
 
 function M.mousepressed(self, x, y, button)
 	if cursorover(self, x, y) then
-		if self.state == 0 then
-			if button == 1 then self:setState(2)
-			elseif button == 2 then self:setState(1) end
+		if self:isFixed() then
+			if button == 1 then
+				self:press()
+			elseif button == 2 then
+				self:flag()
+			end
+		elseif self:isFlagged() then
+			if button == 2 then
+				self:fix()
+			end
 		end
 	end
 end
 
 function M.mousereleased(self, x, y, button)
 	if cursorover(self, x, y) then
-		if self.state == 2 then
-			if button == 1 then self:setState(2) self:setState(3) end
+		if self:isPressed() then
+			if button == 1 then
+				self:reveal()
+			end
 		end
 	end
 end

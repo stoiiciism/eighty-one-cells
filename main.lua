@@ -1,8 +1,4 @@
-function love.load()
-	math.randomseed(os.time())
-
-	Cell = require "cell"
-	
+function reset()
 	cells = {}
 	for y = 1, 9 do
 		cells[y] = {}
@@ -37,6 +33,12 @@ function love.load()
 	end
 end
 
+function love.load()
+	math.randomseed(os.time())
+	Cell = require "cell"
+	reset()
+end
+
 function love.update(dt) end
 
 function love.draw()
@@ -49,6 +51,10 @@ end
 
 function love.keypressed(key)
 	if key == "escape" then love.event.quit() end
+end
+
+function love.keyreleased(key)
+	if key == "r" then reset() end
 end
 
 function love.mousepressed(x, y, button)
