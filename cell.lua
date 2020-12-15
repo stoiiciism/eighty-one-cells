@@ -5,11 +5,12 @@ function cursorover(cell, x, y)
 	return x >= cell.x and x < cell.x + 32 and y >= cell.y and y < cell.y + 32
 end
 
-function M.new(x, y)
+function M.new(game, x, y)
 	local self = setmetatable({}, M)
-	self.value = 0
+	self.game = game
 	self.x = x
 	self.y = y
+	self.value = 0
 	self:fix()
 	return self
 end
@@ -79,7 +80,11 @@ function M.mousereleased(self, x, y, button)
 	if cursorover(self, x, y) then
 		if self:isPressed() then
 			if button == 1 then
-				self:reveal()
+				if self.value == "mine" then
+					self.game:lose((self.x / 32) + 1, (self.y / 32) + 1)
+				else
+					self:reveal()
+				end
 			end
 		end
 	end
