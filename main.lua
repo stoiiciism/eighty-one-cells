@@ -58,17 +58,17 @@ function love.keyreleased(key)
 end
 
 function love.mousepressed(x, y, button)
-	for y = 1, 9 do
-		for x = 1, 9 do
-			cells[y][x]:mousepressed(x, y, button)
+	for j = 1, 9 do
+		for i = 1, 9 do
+			cells[j][i]:mousepressed(x, y, button)
 		end
 	end
 end
 
 function love.mousereleased(x, y, button)
-	for y = 1, 9 do
-		for x = 1, 9 do
-			cells[y][x]:mousereleased(x, y, button)
+	for j = 1, 9 do
+		for i = 1, 9 do
+			cells[j][i]:mousereleased(x, y, button)
 		end
 	end
 end

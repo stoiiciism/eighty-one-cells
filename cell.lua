@@ -15,43 +15,41 @@ function M.new(x, y)
 end
 
 function M.isFixed(self)
-	return self.flagged == false and self.pressed == false and self.revealed == false
+	return not self.p[1] and not self.p[2] and not self.p[3]
 end
 
 function M.isFlagged(self)
-	return self.flagged == true and self.pressed == false and self.revealed == false
+	return self.p[1]
 end
 
 function M.isPressed(self)
-	return self.flagged == false and self.pressed == true and self.revealed == false
+	return self.p[2]
 end
 
 function M.isRevealed(self)
-	return self.flagged == false and self.pressed == false and self.revealed == true
+	return self.p[3]
 end
 
 function M.fix(self)
-	self.flagged = false
-	self.pressed = false
-	self.revealed = false
+	self.p = { false, false, false }
 	self.image = love.graphics.newImage("assets/cells/block.png")
 end
 
 function M.flag(self)
 	self:fix()
-	self.flagged = true
+	self.p[1] = true
 	self.image = love.graphics.newImage("assets/cells/flag.png")
 end
 
 function M.press(self)
 	self:fix()
-	self.pressed = true
+	self.p[2] = true
 	self.image = love.graphics.newImage("assets/cells/0.png")
 end
 
 function M.reveal(self)
 	self:fix()
-	self.revealed = true
+	self.p[3] = true
 	self.image = love.graphics.newImage("assets/cells/"..self.value..".png")
 end
 
