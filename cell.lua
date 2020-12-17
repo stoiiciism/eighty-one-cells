@@ -15,21 +15,10 @@ function M.new(game, x, y)
 	return self
 end
 
-function M.isFixed(self)
-	return not self.p[1] and not self.p[2] and not self.p[3]
-end
-
-function M.isFlagged(self)
-	return self.p[1]
-end
-
-function M.isPressed(self)
-	return self.p[2]
-end
-
-function M.isRevealed(self)
-	return self.p[3]
-end
+function M.isFixed(self) return not self.p[1] and not self.p[2] and not self.p[3] end
+function M.isFlagged(self) return self.p[1] end
+function M.isPressed(self) return self.p[2] end
+function M.isRevealed(self) return self.p[3] end
 
 function M.fix(self)
 	self.p = { false, false, false }
@@ -67,10 +56,12 @@ function M.mousepressed(self, x, y, button)
 				self:press()
 			elseif button == 2 then
 				self:flag()
+				love.audio.play(love.audio.newSource("assets/audio/bloop.wav", "static"))
 			end
 		elseif self:isFlagged() then
 			if button == 2 then
 				self:fix()
+				love.audio.play(love.audio.newSource("assets/audio/bloop.wav", "static"))
 			end
 		end
 	end
@@ -84,6 +75,8 @@ function M.mousereleased(self, x, y, button)
 					self.game:lose((self.x / 32) + 1, (self.y / 32) + 1)
 				else
 					self:reveal()
+					love.audio.play(love.audio.newSource("assets/audio/bloop.wav", "static"))
+					self.game:checkIfWon()
 				end
 			end
 		end
